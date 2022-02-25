@@ -51,7 +51,8 @@ int main(int argc, char* args[])
         SDL_Renderer* renderer = NULL;
 
         if (SDL_CreateWindowAndRenderer(width, height, 0, &window, &renderer) == 0) 
-        {
+        {   
+            SDL_RaiseWindow(window);
             SDL_bool run = SDL_TRUE;
             bool paused = false;
             bool unpaused = false;
@@ -118,5 +119,3 @@ int main(int argc, char* args[])
     SDL_Quit();
     return 0;
 }
-
-

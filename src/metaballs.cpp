@@ -54,14 +54,14 @@ void update_ball_positions(int w, int h, float delta)
     const float tuning_const = 0.01;
     for (int i = 0; i < TOTAL_BALLS; i++)
     {
-        METABALLS[i].x += METABALLS[i].vx*delta*tuning_const;
-        METABALLS[i].y += METABALLS[i].vy*delta*tuning_const;
         // makeshift collision detection
         if (METABALLS[i].x - METABALLS[i].rad < 0 or METABALLS[i].x + METABALLS[i].rad > w)
             METABALLS[i].vx = -METABALLS[i].vx;
         if (METABALLS[i].y - METABALLS[i].rad < 0 or METABALLS[i].y + METABALLS[i].rad > h)
             METABALLS[i].vy = -METABALLS[i].vy;
 
+        METABALLS[i].x += METABALLS[i].vx*delta*tuning_const;
+        METABALLS[i].y += METABALLS[i].vy*delta*tuning_const;
     }
 }
 
