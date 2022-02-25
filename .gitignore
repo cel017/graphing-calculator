@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+# Project Files
+project.sublime-project
+project.sublime-workspace
