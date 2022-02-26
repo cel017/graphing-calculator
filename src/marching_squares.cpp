@@ -1,7 +1,7 @@
 #include "marching_squares.h"
 #include <iostream>
 // square side length
-int SQUARE_SIZE = 20;
+int SQUARE_SIZE = 10;
 
 // initialise columns and rows
 int COLS, ROWS;
@@ -91,15 +91,8 @@ void draw_isolines(SDL_Renderer *renderer, int x, int y, std::vector<std::vector
 
     for (auto line : STATE_DICT[state])
     {   
-        bool empty = false;
         if (line[0] == -1)
         {
-            if (GRID_ON)
-            {
-                SDL_SetRenderDrawColor(renderer, 100, 200, 100, 255);
-                SDL_Rect rect = {x, y, SQUARE_SIZE, SQUARE_SIZE};
-                SDL_RenderDrawRect(renderer, &rect);
-            }
             break;
         }
         float interpolate;
@@ -111,7 +104,12 @@ void draw_isolines(SDL_Renderer *renderer, int x, int y, std::vector<std::vector
 
 
         if (GRID_ON)
-        {
+        {   
+            // draw intersections
+            SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
+            SDL_Rect rect = {start[0]-4, start[1] - 4, 8, 8};
+            SDL_RenderDrawRect(renderer, &rect);
+
             SDL_SetRenderDrawColor(renderer, 250, 120, 80, 255);
         }
         else
@@ -120,4 +118,13 @@ void draw_isolines(SDL_Renderer *renderer, int x, int y, std::vector<std::vector
             start[0], start[1],
             end[0], end[1]);
     }
+
+    // draw grid square
+    if (GRID_ON)
+    {
+        SDL_SetRenderDrawColor(renderer, 140, 180, 160, 255);
+        SDL_Rect rect = {x, y, SQUARE_SIZE, SQUARE_SIZE};
+        SDL_RenderDrawRect(renderer, &rect);
+    }
+
 }

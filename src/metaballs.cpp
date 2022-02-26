@@ -1,5 +1,8 @@
 #include "metaballs.h"
 
+bool drag = false;
+unsigned int active_drag = 0;
+
 int TOTAL_BALLS;
 std::vector<Ball> METABALLS;
  
@@ -9,7 +12,7 @@ void generate_balls(int w, int h, int ball_num, int min_vel, int max_vel)
     std::random_device rd;
     std::mt19937 rng(rd());
 
-    std::uniform_int_distribution<> dist_rad(80, 100);
+    std::uniform_int_distribution<> dist_rad(20, 30);
     std::uniform_int_distribution<> dist_cent_x(0, w);
     std::uniform_int_distribution<> dist_cent_y(0, h);
     std::uniform_int_distribution<> dist_vel_x(min_vel, max_vel);
@@ -46,6 +49,35 @@ void generate_balls(int w, int h, int ball_num, int min_vel, int max_vel)
         METABALLS[i].vy = vel_y;
     }
     TOTAL_BALLS = ball_num;
+    return;
+}
+
+void draw_paused(SDL_Renderer *renderer, bool clicked, int xm, int ym)
+{
+    if (drag)
+    {
+        METABALLS[active_drag].x = xm;
+        METABALLS[active_drag].y = ym;
+    }
+
+    for (int i = 0; i < TOTAL_BALLS; i++)
+    {
+        SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
+        SDL_Rect rect = {(int)METABALLS[i].x-15, (int)METABALLS[i].y-15, 30, 30};
+        if (!drag and clicked)
+        {
+            if (rect.x<xm and xm<(rect.x+30) and rect.y<ym and ym<(rect.y+30))
+            {
+                METABALLS[i].x = xm;
+                METABALLS[i].y = ym;
+                drag = true;
+                active_drag = i;
+            }
+        }
+        else if (!clicked and drag)
+            drag = false;
+        SDL_RenderDrawRect(renderer, &rect);
+    }
     return;
 }
 
