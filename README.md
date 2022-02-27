@@ -1,7 +1,9 @@
 # metaballs
  rendering metaballs using the marching squares algorithm (SDL2)
+ 
+ ## Usage
 
-`g` to toggle grid; `[` and `]` to increase/decrease grid resolution.
+`g` to toggle grid; `[` and `]` to increase/decrease grid resolution. `SPACE` to pause.
 
 ## Running Instructions
 Install SDL2, SDL_Image and use the following command in project directory to compile and run the program:
