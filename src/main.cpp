@@ -40,15 +40,16 @@ void render_frame(SDL_Renderer * renderer, int width, int height,
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 }
+
 int main(int argc, char* args[])
 {
-    int width = 1000, height = 840;
+    int width = 500, height = 500;
 
     // GET COLS AND ROWS FOR GRID
     generate_field(width, height);
 
     // GENERATE METABALLS PSEUDO RANDOMLY
-    generate_balls(width, height, 30, 10, 20);
+    generate_balls(width, height, 180, 10, 20);
 
     unsigned int f0 = SDL_GetTicks();
     unsigned int f1 = SDL_GetTicks();

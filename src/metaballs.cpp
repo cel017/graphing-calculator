@@ -12,7 +12,7 @@ void generate_balls(int w, int h, int ball_num, int min_vel, int max_vel)
     std::random_device rd;
     std::mt19937 rng(rd());
 
-    std::uniform_int_distribution<> dist_rad(20, 30);
+    std::uniform_int_distribution<> dist_rad(10, 12);
     std::uniform_int_distribution<> dist_cent_x(0, w);
     std::uniform_int_distribution<> dist_cent_y(0, h);
     std::uniform_int_distribution<> dist_vel_x(min_vel, max_vel);
