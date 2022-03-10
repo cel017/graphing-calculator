@@ -6,41 +6,6 @@
 #include "metaballs.h"
 #include "marching_squares.h"
 
-void render_frame(SDL_Renderer * renderer, int width, int height, 
-    float delta, bool paused, int xmouse, int ymouse, bool clicked)
-{
-    // draw border
-    SDL_SetRenderDrawColor(renderer, 40, 140, 80, 255);
-    SDL_Rect rect = {0, 0, width, height};
-    SDL_RenderDrawRect(renderer, &rect);
-
-    if (paused)
-        draw_paused(renderer, clicked, xmouse, ymouse);
-    else
-        update_ball_positions(width, height, delta);
-    // rendering isolines for each 
-    // square in the grid;
-    for (int i = 0; i < COLS+1; i++)
-    {
-        for (int j = 0; j < ROWS+1; j++)
-        {   
-            int x_pos = i*SQUARE_SIZE, y_pos = j*SQUARE_SIZE;
-            std::vector<std::vector<float>> square;
-
-            square.push_back(point_state(x_pos, y_pos));
-            square.push_back(point_state(x_pos+SQUARE_SIZE, y_pos));
-            square.push_back(point_state(x_pos+SQUARE_SIZE, y_pos+SQUARE_SIZE));
-            square.push_back(point_state(x_pos, y_pos+SQUARE_SIZE));
-
-            draw_isolines(renderer, x_pos, y_pos, square);
-        }
-    }
-
-    SDL_RenderPresent(renderer);    // update render
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-    SDL_RenderClear(renderer);
-}
-
 int main(int argc, char* args[])
 {
     int width = 500, height = 500;
@@ -62,14 +27,16 @@ int main(int argc, char* args[])
 
         if (SDL_CreateWindowAndRenderer(width, height, 0, &window, &renderer) == 0) 
         {   
-            SDL_RaiseWindow(window);
-            SDL_bool run = SDL_TRUE;
+            // defining vars
             bool paused = false;
             bool unpaused = false;
             unsigned int time_paused = 0;
             unsigned int paused_time = 0;
             int xmouse, ymouse;
             bool mouse_clicked = false;
+
+            SDL_RaiseWindow(window);
+            SDL_bool run = SDL_TRUE;
             while (run) 
             {
                 // get mouse pos
@@ -87,6 +54,7 @@ int main(int argc, char* args[])
                     delta = f0-f1;
                 }
 
+                // INPUT //
                 SDL_Event event;
                 while (SDL_PollEvent(&event)) 
                 {
@@ -128,11 +96,44 @@ int main(int argc, char* args[])
                         }
                     }
                 }
+
+                // RENDER FRAME //
                 if (delta>1000/240.0 or paused)
                 {
                     std::cout << 1000/delta << std::endl;
                     f1 = f0;
-                    render_frame(renderer, width, height, delta, paused, xmouse, ymouse, mouse_clicked);
+
+                    // draw border
+                    SDL_SetRenderDrawColor(renderer, 40, 140, 80, 255);
+                    SDL_Rect rect = {0, 0, width, height};
+                    SDL_RenderDrawRect(renderer, &rect);
+
+                    if (paused)
+                        draw_paused(renderer, mouse_clicked, xmouse, ymouse);
+                    else
+                        update_ball_positions(width, height, delta);
+                    // rendering isolines for each 
+                    // square in the grid;
+                    for (int i = 0; i < COLS+1; i++)
+                    {
+                        for (int j = 0; j < ROWS+1; j++)
+                        {   
+                            int x_pos = i*SQUARE_SIZE, y_pos = j*SQUARE_SIZE;
+                            std::vector<std::vector<float>> square;
+
+                            square.push_back(point_state(x_pos, y_pos));
+                            square.push_back(point_state(x_pos+SQUARE_SIZE, y_pos));
+                            square.push_back(point_state(x_pos+SQUARE_SIZE, y_pos+SQUARE_SIZE));
+                            square.push_back(point_state(x_pos, y_pos+SQUARE_SIZE));
+
+                            draw_isolines(renderer, x_pos, y_pos, square);
+                        }
+                    }
+
+                    SDL_RenderPresent(renderer);    // update render
+                    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+                    SDL_RenderClear(renderer);
+
                 }
             }   
         }

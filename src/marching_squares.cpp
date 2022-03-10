@@ -1,5 +1,5 @@
 #include "marching_squares.h"
-#include <iostream>
+
 // square side length
 int SQUARE_SIZE = 10;
 
@@ -101,7 +101,6 @@ void draw_isolines(SDL_Renderer *renderer, int x, int y, std::vector<std::vector
         std::vector<int> start = get_coordinates(x, y, line[0], interpolate);
         interpolate = lin_intrp(line[1], point_list, 1);
         std::vector<int> end = get_coordinates(x, y, line[1], interpolate);
-
 
         if (GRID_ON)
         {   

@@ -54,16 +54,22 @@ void generate_balls(int w, int h, int ball_num, int min_vel, int max_vel)
 
 void draw_paused(SDL_Renderer *renderer, bool clicked, int xm, int ym)
 {
+    // function to draw pause screen in which balls can be dragged
+
     if (drag)
     {
+        // if ball is actively in drag state, other balls do not need to be checked
         METABALLS[active_drag].x = xm;
         METABALLS[active_drag].y = ym;
     }
 
     for (int i = 0; i < TOTAL_BALLS; i++)
     {
+        // rects to signify centres
         SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
         SDL_Rect rect = {(int)METABALLS[i].x-15, (int)METABALLS[i].y-15, 30, 30};
+
+        // not in active drag state and mouse click detected
         if (!drag and clicked)
         {
             if (rect.x<xm and xm<(rect.x+30) and rect.y<ym and ym<(rect.y+30))
@@ -74,8 +80,12 @@ void draw_paused(SDL_Renderer *renderer, bool clicked, int xm, int ym)
                 active_drag = i;
             }
         }
+
+        // already in drag state and no mouse click detected
         else if (!clicked and drag)
             drag = false;
+
+        // draw centre rects
         SDL_RenderDrawRect(renderer, &rect);
     }
     return;
@@ -92,6 +102,7 @@ void update_ball_positions(int w, int h, float delta)
         if (METABALLS[i].y - METABALLS[i].rad < 0 or METABALLS[i].y + METABALLS[i].rad > h)
             METABALLS[i].vy = -METABALLS[i].vy;
 
+        //update positions
         METABALLS[i].x += METABALLS[i].vx*delta*tuning_const;
         METABALLS[i].y += METABALLS[i].vy*delta*tuning_const;
     }
@@ -101,6 +112,7 @@ std::vector<float> point_state(int x, int y)
 {
     std::vector<float> point;
     float val = 0.0f;
+
     for (int i = 0; i < TOTAL_BALLS; i++)
     {
         // radius `r` as float to get float val after division
@@ -110,6 +122,8 @@ std::vector<float> point_state(int x, int y)
         val += (r*r)/(e_x*e_x + e_y*e_y);
     }
     val = val/TOTAL_BALLS*TOTAL_BALLS;
+
+    // return state and value of point(for interpolation)
     if (val > 1)
     {
         point.push_back(1.0f);
