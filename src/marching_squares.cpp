@@ -23,22 +23,26 @@ const int STATE_DICT[16][2][2] =
 
 void generate_field(int w, int h)
 {
+    // get columns and rows based on screen bounds
     COLS = w/SQUARE_SIZE;
     ROWS = h/SQUARE_SIZE;
 }
 
 int get_state(int p1, int p2, int p3, int p4)
 {
+    // decimal to binary square state
     return (8*p1 + 4*p2 + 2*p3 + p4);
 }
 
 float lin_intrp(int edgepoint, std::vector<std::vector<float>> point_list, float threshold)
 {
+    // get pair of points connecting segment that edgepoint lies on
     int point1 = edgepoint;
     int point2 = edgepoint + 1;
     if (point2 > 3) 
         point2 = 0;
 
+    // calculate interpolation factor and return
     float ratio = (threshold - point_list[point1][1])/(point_list[point2][1] - point_list[point1][1]);
     if (point1 < 2)
         return (ratio);
@@ -75,6 +79,7 @@ std::vector<int> get_coordinates(int x, int y, int edgepoint, float interpolate)
 
 void draw_square(SDL_Renderer *renderer, int x, int y, int side_length)
 {   
+    // basic function to render square
     SDL_RenderDrawLine(renderer, x, y, x+SQUARE_SIZE, y);
     SDL_RenderDrawLine(renderer, x, y, x, y+SQUARE_SIZE);
     SDL_RenderDrawLine(renderer, x+SQUARE_SIZE, y, x+SQUARE_SIZE, y+SQUARE_SIZE);
@@ -83,6 +88,7 @@ void draw_square(SDL_Renderer *renderer, int x, int y, int side_length)
 
 void draw_isolines(SDL_Renderer *renderer, int x, int y, std::vector<std::vector<float>> point_list)
 {
+    // square state
     int state = get_state(
         (int)point_list[0][0],
         (int)point_list[1][0],
@@ -93,10 +99,12 @@ void draw_isolines(SDL_Renderer *renderer, int x, int y, std::vector<std::vector
     {   
         if (line[0] == -1)
         {
+            // no isoline to render
             break;
         }
+        
         float interpolate;
-
+        // calculate start and end points of isoline
         interpolate = lin_intrp(line[0], point_list, 1);
         std::vector<int> start = get_coordinates(x, y, line[0], interpolate);
         interpolate = lin_intrp(line[1], point_list, 1);
@@ -113,6 +121,8 @@ void draw_isolines(SDL_Renderer *renderer, int x, int y, std::vector<std::vector
         }
         else
             SDL_SetRenderDrawColor(renderer, 60, 150, 202, 255);
+
+        // draw isoline
         SDL_RenderDrawLine(renderer, 
             start[0], start[1],
             end[0], end[1]);

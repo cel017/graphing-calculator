@@ -27,7 +27,7 @@ int main(int argc, char* args[])
 
         if (SDL_CreateWindowAndRenderer(width, height, 0, &window, &renderer) == 0) 
         {   
-            // defining vars
+            // initialising vars
             bool paused = false;
             bool unpaused = false;
             unsigned int time_paused = 0;
