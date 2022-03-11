@@ -54,7 +54,7 @@ int main(int argc, char* args[])
                     delta = f0-f1;
                 }
 
-                // INPUT //
+                // INPUTS //
                 SDL_Event event;
                 while (SDL_PollEvent(&event)) 
                 {
@@ -63,12 +63,14 @@ int main(int argc, char* args[])
                         case SDL_QUIT:
                             run = SDL_FALSE;
                             break;
+                        // MOUSE INPUTS //
                         case SDL_MOUSEBUTTONDOWN:
                             mouse_clicked = true;
                             break;
                         case SDL_MOUSEBUTTONUP:
                             mouse_clicked = false;
                             break;
+                        // KEYBOARD INPUTS //
                         case SDL_KEYDOWN:
                         {
                             switch(event.key.keysym.sym)
