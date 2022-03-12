@@ -29,11 +29,11 @@ void generate_balls(int w, int h, int ball_num, int min_vel, int max_vel)
         if (center_x > w-radius)
             center_x -= radius;
         else if (center_x < radius)
-            center_x += radius;
-        if (center_y > h-radius)
-            center_y -= radius;
+            center_x += radius+10;
+        if (center_y > h-radius-10)
+            center_y -= radius-10;
         else if (center_y < radius)
-            center_y += radius;
+            center_y += radius+10;
         // generate velocity
         int vel_x    = dist_vel_x(rng);
         int vel_y    = dist_vel_y(rng);
@@ -97,12 +97,29 @@ void update_ball_positions(int w, int h, float delta)
     for (int i = 0; i < TOTAL_BALLS; i++)
     {
         // makeshift collision detection
-        if (METABALLS[i].x - METABALLS[i].rad < 0 or METABALLS[i].x + METABALLS[i].rad > w)
+        if (METABALLS[i].x - METABALLS[i].rad < 0)
+        {
+            METABALLS[i].x += 5;
             METABALLS[i].vx = -METABALLS[i].vx;
-        if (METABALLS[i].y - METABALLS[i].rad < 0 or METABALLS[i].y + METABALLS[i].rad > h)
-            METABALLS[i].vy = -METABALLS[i].vy;
+        }
+        else if (METABALLS[i].x + METABALLS[i].rad > w)
+        {
+            METABALLS[i].x -= 5;
+            METABALLS[i].vx = -METABALLS[i].vx;
 
-        //update positions
+        }
+        if (METABALLS[i].y - METABALLS[i].rad < 0)
+        {
+            METABALLS[i].y += 5;
+            METABALLS[i].vy = -METABALLS[i].vy;
+        }
+        if (METABALLS[i].y + METABALLS[i].rad > h)
+        {
+            METABALLS[i].y -= 5;
+            METABALLS[i].vy = -METABALLS[i].vy;
+        }
+
+        // update positions
         METABALLS[i].x += METABALLS[i].vx*delta*tuning_const;
         METABALLS[i].y += METABALLS[i].vy*delta*tuning_const;
     }

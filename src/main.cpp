@@ -1,6 +1,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <vector>
+#include <string>
 #include <iostream>
 
 #include "metaballs.h"
@@ -34,6 +35,8 @@ int main(int argc, char* args[])
             unsigned int paused_time = 0;
             int xmouse, ymouse;
             bool mouse_clicked = false;
+            bool update_text = false;
+            std::string input_equation = "";
 
             SDL_RaiseWindow(window);
             SDL_bool run = SDL_TRUE;
@@ -75,25 +78,51 @@ int main(int argc, char* args[])
                         {
                             switch(event.key.keysym.sym)
                             {
-                                case SDLK_SPACE:
+                                // general keydown events
+                                case SDLK_SPACE:    // CTRL + SPACE
+                                    if (not (SDL_GetModState() & KMOD_CTRL))
+                                        break;
                                     if (!paused)
                                         paused_time = SDL_GetTicks();
                                     else
                                         unpaused = true;
                                     paused = !paused;
                                     break;
-                                case SDLK_g:
+                                case SDLK_g:        // CTRL + G
+                                    if (not (SDL_GetModState() & KMOD_CTRL))
+                                        break;
                                     GRID_ON = !GRID_ON;
                                     break;
                                 case SDLK_RIGHTBRACKET:
+                                    if (not (SDL_GetModState() & KMOD_CTRL))
+                                        break;
                                     SQUARE_SIZE++;
                                     generate_field(width, height);
                                     break;
                                 case SDLK_LEFTBRACKET:
+                                    if (not (SDL_GetModState() & KMOD_CTRL))
+                                        break;
                                     SQUARE_SIZE--;
                                     generate_field(width, height);
                                     break;
+
+                                // equation input keydown events
+                                case SDLK_BACKSPACE:
+                                    if (input_equation.length() == 0)
+                                        break;
+                                    input_equation.pop_back();
+                                    update_text = true;
+                                    break;
                             }
+                            break;
+                        }
+                        // TEXT INPUT //
+                        case SDL_TEXTINPUT:
+                        {
+                            if( SDL_GetModState() & KMOD_CTRL)
+                                break;
+                            input_equation += event.text.text;
+                            update_text = true;
                             break;
                         }
                     }
@@ -135,7 +164,6 @@ int main(int argc, char* args[])
                     SDL_RenderPresent(renderer);    // update render
                     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
                     SDL_RenderClear(renderer);
-
                 }
             }   
         }
