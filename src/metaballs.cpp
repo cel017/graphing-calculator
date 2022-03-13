@@ -8,7 +8,7 @@ std::vector<Ball> METABALLS;
  
 void generate_balls(int w, int h, int ball_num, int min_vel, int max_vel)
 {
-
+    
     std::random_device rd;
     std::mt19937 rng(rd());
 

@@ -6,6 +6,7 @@
 
 #include "metaballs.h"
 #include "marching_squares.h"
+#include "graph.h"
 
 int main(int argc, char* args[])
 {
