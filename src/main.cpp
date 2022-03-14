@@ -38,6 +38,7 @@ int main(int argc, char* args[])
             bool mouse_clicked = false;
             bool update_text = false;
             std::string input_equation = "";
+            std::vector<Equation> equationsList;
 
             SDL_RaiseWindow(window);
             SDL_bool run = SDL_TRUE;
@@ -106,13 +107,22 @@ int main(int argc, char* args[])
                                     SQUARE_SIZE--;
                                     generate_field(width, height);
                                     break;
-
                                 // equation input keydown events
                                 case SDLK_BACKSPACE:
                                     if (input_equation.length() == 0)
                                         break;
                                     input_equation.pop_back();
                                     update_text = true;
+                                    break;
+                                case SDLK_RETURN:
+                                    Equation temp(input_equation);
+                                    equationsList.push_back(temp);
+                                    input_equation = "";
+                                    // print sep line
+                                    std::cout << "\n";
+                                    for (int i = 0; i<20; i++)
+                                        std::cout << "----";
+                                    std::cout << std::endl;
                                     break;
                             }
                             break;
@@ -122,6 +132,7 @@ int main(int argc, char* args[])
                         {
                             if( SDL_GetModState() & KMOD_CTRL)
                                 break;
+                            std:: cout << event.text.text;
                             input_equation += event.text.text;
                             update_text = true;
                             break;
@@ -131,8 +142,8 @@ int main(int argc, char* args[])
 
                 // RENDER FRAME //
                 if (delta>1000/240.0 or paused)
-                {
-                    std::cout << 1000/delta << std::endl;
+                {   
+                    // std::cout << 1000/delta << std::endl;
                     f1 = f0;
 
                     // draw border
@@ -149,25 +160,28 @@ int main(int argc, char* args[])
                     for (int i = -COLS/2-1; i < COLS/2+1; i++)
                     {
                         for (int j = ROWS/2+1; j > -ROWS/2-2; j--)
-                        {   
+                        {
                             int x_pos = i*SQUARE_SIZE, y_pos = j*SQUARE_SIZE;
                             std::vector<std::vector<float>> square;
 
-                            square.push_back(point_state(x_pos, y_pos));
-                            square.push_back(point_state(x_pos+SQUARE_SIZE, y_pos));
-                            square.push_back(point_state(x_pos+SQUARE_SIZE, y_pos+SQUARE_SIZE));
-                            square.push_back(point_state(x_pos, y_pos+SQUARE_SIZE));
+                            for (auto eqn: equationsList)
+                            {
+                                square.push_back(eqn.parse_point(x_pos, y_pos));
+                                square.push_back(eqn.parse_point(x_pos+SQUARE_SIZE, y_pos));
+                                square.push_back(eqn.parse_point(x_pos+SQUARE_SIZE, y_pos+SQUARE_SIZE));
+                                square.push_back(eqn.parse_point(x_pos, y_pos+SQUARE_SIZE));
 
-                            draw_isolines(renderer, x_pos, y_pos, width, height, square);
+                                draw_isolines(renderer, x_pos, y_pos, width, height, square);
+                            }
                         }
                     }
 
                     if (update_text);
                     SDL_RenderPresent(renderer);    // update render
-                    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+                    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
                     SDL_RenderClear(renderer);
                 }
-            }   
+            }
         }
         if (renderer)
             SDL_DestroyRenderer(renderer);

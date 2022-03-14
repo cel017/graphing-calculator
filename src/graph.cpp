@@ -1,6 +1,15 @@
 #include "graph.h"
 
 
+bool isNumber(const std::string& str)
+{
+    for (char const &c : str) 
+    {
+        if (isdigit(c) == 0) return false;
+    }
+    return true;
+}
+
 std::unordered_map<std::string, int> const OPS_PRIORITY(
 {
 	{"^", 4},
@@ -109,7 +118,7 @@ Equation::Equation(std::string equation)
     	{
     		if (is_digit)
     		{
-    			rev_pol.push(token);
+    			rev_pol.push_back(token);
     			// reset is_digit after token ahs been processed
 		    	is_digit = false;
 		    }
@@ -120,7 +129,7 @@ Equation::Equation(std::string equation)
     			while (ops.top() != "(")
     			{
     				// push operator to reverse polish queue
-    				rev_pol.push(ops.top());
+    				rev_pol.push_back(ops.top());
     				// pop operator from stack
     				ops.pop();
     			}
@@ -137,10 +146,10 @@ Equation::Equation(std::string equation)
     			}
     			else
     			{
-    				while (OPS_PRIORITY.at(token) < OPS_PRIORITY.at(ops.top()))
+    				while (!ops.empty() && OPS_PRIORITY.at(token) < OPS_PRIORITY.at(ops.top()))
     				{
     					// push operator to queue
-    					rev_pol.push(ops.top());
+    					rev_pol.push_back(ops.top());
     					ops.pop();
     				}
     				ops.push(token);
@@ -157,9 +166,51 @@ Equation::Equation(std::string equation)
     // parse stack
     while (!ops.empty())
     {
-    	rev_pol.push(ops.top());
+    	rev_pol.push_back(ops.top());
     	ops.pop();
     }
 
     this->equation = equation;
+}
+
+std::vector<float> Equation::parse_point(int x, int y, float scale)
+{
+    std::vector<float> point;
+
+	std::stack<float> output_stack;
+	for (auto token : rev_pol)
+	{
+		if (!isNumber(token) && token != "x" && token != "y")
+		{
+			float operand2 = output_stack.top();
+			output_stack.pop();
+			float operand1 = output_stack.top();
+			output_stack.pop();
+
+			output_stack.push(calculate(operand1, operand2, token));
+		}
+		else
+		{
+			if (token == "x")
+				output_stack.push(x/scale);
+			else if (token == "y")
+				output_stack.push(y/scale);
+			else
+				output_stack.push((float)std::stoi(token));
+		}
+	}
+
+	float val = output_stack.top();
+    if (val > 1)
+    {
+        point.push_back(1.0f);
+        point.push_back(val);
+        return point;
+    }
+    else
+    {
+        point.push_back(0.0f);
+        point.push_back(val);
+        return point;
+    }
 }

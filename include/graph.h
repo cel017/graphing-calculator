@@ -9,6 +9,8 @@
 #include <unordered_map>
 #include <string>
 
+// func to check if string is num
+bool isNumber(const std::string& str);
 // priority map for operators
 extern std::unordered_map<std::string, int> const OPS_PRIORITY;
 // calculate a<binary operator >b
@@ -18,10 +20,11 @@ class Equation
 {
 public:
 	Equation(std::string equation);
+	std::vector<float> parse_point(int x, int y, float scale = 25.0f);
 private:
 	std::string equation;
 	std::string imp_exp;  // implicit expression
-	std::queue<std::string> rev_pol;   // reverse polish notation
+	std::vector<std::string> rev_pol;   // reverse polish notation
 };
 
 #endif
