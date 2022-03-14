@@ -19,6 +19,6 @@ float lin_intrp(int edgepoint, std::vector<std::vector<float>> point_list, float
 // get coordinates for edgepoint on render window
 std::vector<int> get_coordinates(int x, int y, int edgepoint, float interpolate);
 // draws isolines based on state of square
-void draw_isolines(SDL_Renderer *renderer, int x, int y, std::vector<std::vector<float>> point_list);
+void draw_isolines(SDL_Renderer *renderer, int x, int y, int width, int height, std::vector<std::vector<float>> point_list);
 
 #endif

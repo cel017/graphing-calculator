@@ -86,7 +86,7 @@ void draw_square(SDL_Renderer *renderer, int x, int y, int side_length)
     SDL_RenderDrawLine(renderer, x, y+SQUARE_SIZE, x+SQUARE_SIZE, y+SQUARE_SIZE);
 }
 
-void draw_isolines(SDL_Renderer *renderer, int x, int y, std::vector<std::vector<float>> point_list)
+void draw_isolines(SDL_Renderer *renderer, int x, int y, int width, int height, std::vector<std::vector<float>> point_list)
 {
     // square state
     int state = get_state(
@@ -114,7 +114,7 @@ void draw_isolines(SDL_Renderer *renderer, int x, int y, std::vector<std::vector
         {   
             // draw intersections
             SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
-            SDL_Rect rect = {start[0]-4, start[1] - 4, 8, 8};
+            SDL_Rect rect = {start[0]-2+(width/2), -start[1] - 2+(height/2), 4, 4};
             SDL_RenderDrawRect(renderer, &rect);
 
             SDL_SetRenderDrawColor(renderer, 250, 120, 80, 255);
@@ -124,15 +124,15 @@ void draw_isolines(SDL_Renderer *renderer, int x, int y, std::vector<std::vector
 
         // draw isoline
         SDL_RenderDrawLine(renderer, 
-            start[0], start[1],
-            end[0], end[1]);
+            start[0]+(width/2), -start[1]+(height/2),
+            end[0]+(width/2), -end[1]+(height)/2);
     }
 
     // draw grid square
     if (GRID_ON)
     {
         SDL_SetRenderDrawColor(renderer, 140, 180, 160, 255);
-        SDL_Rect rect = {x, y, SQUARE_SIZE, SQUARE_SIZE};
+        SDL_Rect rect = {x + width/2, -y+ height/2, SQUARE_SIZE, SQUARE_SIZE};
         SDL_RenderDrawRect(renderer, &rect);
     }
 

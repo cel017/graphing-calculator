@@ -10,7 +10,7 @@
 
 int main(int argc, char* args[])
 {
-    int width = 500, height = 500;
+    int width = 800, height = 800;
 
     // GET COLS AND ROWS FOR GRID
     generate_field(width, height);
@@ -146,9 +146,9 @@ int main(int argc, char* args[])
                         update_ball_positions(width, height, delta);
                     // rendering isolines for each 
                     // square in the grid;
-                    for (int i = 0; i < COLS+1; i++)
+                    for (int i = -COLS/2-1; i < COLS/2+1; i++)
                     {
-                        for (int j = 0; j < ROWS+1; j++)
+                        for (int j = ROWS/2+1; j > -ROWS/2-2; j--)
                         {   
                             int x_pos = i*SQUARE_SIZE, y_pos = j*SQUARE_SIZE;
                             std::vector<std::vector<float>> square;
@@ -158,10 +158,11 @@ int main(int argc, char* args[])
                             square.push_back(point_state(x_pos+SQUARE_SIZE, y_pos+SQUARE_SIZE));
                             square.push_back(point_state(x_pos, y_pos+SQUARE_SIZE));
 
-                            draw_isolines(renderer, x_pos, y_pos, square);
+                            draw_isolines(renderer, x_pos, y_pos, width, height, square);
                         }
                     }
 
+                    if (update_text);
                     SDL_RenderPresent(renderer);    // update render
                     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
                     SDL_RenderClear(renderer);

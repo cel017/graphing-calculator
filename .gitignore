@@ -34,3 +34,5 @@
 # Project Files
 project.sublime-project
 project.sublime-workspace
+.vscode/launch.json
+.vscode/tasks.json
