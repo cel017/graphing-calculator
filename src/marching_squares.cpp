@@ -1,7 +1,7 @@
 #include "marching_squares.h"
 
 // square side length
-int SQUARE_SIZE = 8;
+int SQUARE_SIZE = 5;
 
 // initialise columns and rows
 int COLS, ROWS;

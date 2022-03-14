@@ -15,9 +15,6 @@ int main(int argc, char* args[])
     // GET COLS AND ROWS FOR GRID
     generate_field(width, height);
 
-    // GENERATE METABALLS PSEUDO RANDOMLY
-    generate_balls(width, height, 180, 10, 20);
-
     unsigned int f0 = SDL_GetTicks();
     unsigned int f1 = SDL_GetTicks();
     double delta = 0;
@@ -178,7 +175,7 @@ int main(int argc, char* args[])
 
                     if (update_text);
                     SDL_RenderPresent(renderer);    // update render
-                    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+                    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
                     SDL_RenderClear(renderer);
                 }
             }
