@@ -171,10 +171,16 @@ Equation::Equation(std::string equation)
     }
 
     this->equation = equation;
+    for (auto x: rev_pol)
+    {
+    	std::cout << '\n';
+    	std::cout << x << std::endl;
+    }
 }
 
-std::vector<float> Equation::parse_point(int x, int y, float scale)
+std::vector<float> Equation::parse_point(float x, float y, float scale)
 {
+	x=x/scale, y=y/scale;
     std::vector<float> point;
 
 	std::stack<float> output_stack;
@@ -192,16 +198,16 @@ std::vector<float> Equation::parse_point(int x, int y, float scale)
 		else
 		{
 			if (token == "x")
-				output_stack.push(x/scale);
+				output_stack.push(x);
 			else if (token == "y")
-				output_stack.push(y/scale);
+				output_stack.push(y);
 			else
 				output_stack.push((float)std::stoi(token));
 		}
 	}
 
 	float val = output_stack.top();
-    if (val > 1)
+    if (val <= 1)
     {
         point.push_back(1.0f);
         point.push_back(val);

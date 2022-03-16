@@ -112,8 +112,7 @@ int main(int argc, char* args[])
                                     update_text = true;
                                     break;
                                 case SDLK_RETURN:
-                                    Equation temp(input_equation);
-                                    equationsList.push_back(temp);
+                                    equationsList.push_back(Equation (input_equation));
                                     input_equation = "";
                                     // print sep line
                                     std::cout << "\n";
@@ -127,7 +126,7 @@ int main(int argc, char* args[])
                         // TEXT INPUT //
                         case SDL_TEXTINPUT:
                         {
-                            if( SDL_GetModState() & KMOD_CTRL)
+                            if(SDL_GetModState() & KMOD_CTRL)
                                 break;
                             std:: cout << event.text.text;
                             input_equation += event.text.text;
@@ -136,6 +135,8 @@ int main(int argc, char* args[])
                         }
                     }
                 }
+                SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+                SDL_RenderClear(renderer);
 
                 // RENDER FRAME //
                 if (delta>1000/240.0 or paused)
@@ -159,11 +160,11 @@ int main(int argc, char* args[])
                         for (int j = ROWS/2+1; j > -ROWS/2-2; j--)
                         {
                             int x_pos = i*SQUARE_SIZE, y_pos = j*SQUARE_SIZE;
-                            std::vector<std::vector<float>> square;
 
                             for (auto eqn: equationsList)
                             {
-                                square.push_back(eqn.parse_point(x_pos, y_pos));
+                                std::vector<std::vector<float>> square;
+                                square.push_back(eqn.parse_point(x_pos , y_pos));
                                 square.push_back(eqn.parse_point(x_pos+SQUARE_SIZE, y_pos));
                                 square.push_back(eqn.parse_point(x_pos+SQUARE_SIZE, y_pos+SQUARE_SIZE));
                                 square.push_back(eqn.parse_point(x_pos, y_pos+SQUARE_SIZE));
@@ -175,8 +176,6 @@ int main(int argc, char* args[])
 
                     if (update_text);
                     SDL_RenderPresent(renderer);    // update render
-                    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-                    SDL_RenderClear(renderer);
                 }
             }
         }
