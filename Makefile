@@ -1,5 +1,5 @@
 CXX ?= g++
-# ERROR ?= -Wall -Wextra -Werror -pedantic
+ERROR ?= -Wall -Wextra -Werror -pedantic
 CFLAGS ?= -O3 -ggdb ${ERROR}
 LDFLAGS ?= -lSDL2 -lSDL2main -lSDL2_image
 SRC = $(wildcard src/*.cpp)
