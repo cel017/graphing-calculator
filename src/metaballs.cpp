@@ -141,7 +141,7 @@ std::vector<float> point_state(int x, int y)
     val = val/TOTAL_BALLS*TOTAL_BALLS;
 
     // return state and value of point(for interpolation)
-    if (val > 1)
+    if (val > 0)
     {
         point.push_back(1.0f);
         point.push_back(val);

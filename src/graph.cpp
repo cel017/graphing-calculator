@@ -146,7 +146,7 @@ Equation::Equation(std::string equation)
     			}
     			else
     			{
-    				while (!ops.empty() && OPS_PRIORITY.at(token) < OPS_PRIORITY.at(ops.top()))
+    				while (!ops.empty() && ops.top() != "(" && OPS_PRIORITY.at(token) < OPS_PRIORITY.at(ops.top()))
     				{
     					// push operator to queue
     					rev_pol.push_back(ops.top());
@@ -171,11 +171,11 @@ Equation::Equation(std::string equation)
     }
 
     this->equation = equation;
+
+    // print reverse polish
+    std::cout << '\n';
     for (auto x: rev_pol)
-    {
-    	std::cout << '\n';
     	std::cout << x << std::endl;
-    }
 }
 
 std::vector<float> Equation::parse_point(float x, float y, float scale)

@@ -20,9 +20,9 @@ class Equation
 {
 public:
 	Equation(std::string equation);
-	std::vector<float> parse_point(float x, float y, float scale = 1);
-	std::string equation;
+	std::vector<float> parse_point(float x, float y, float scale = 25.0f);
 private:
+	std::string equation;
 	std::string imp_exp;  // implicit expression
 	std::vector<std::string> rev_pol;   // reverse polish notation
 };

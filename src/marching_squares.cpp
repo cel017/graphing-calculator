@@ -1,7 +1,7 @@
 #include "marching_squares.h"
 
 // square side length
-int SQUARE_SIZE = 5;
+int SQUARE_SIZE = 6;
 
 // initialise columns and rows
 int COLS, ROWS;
@@ -56,20 +56,20 @@ std::vector<int> get_coordinates(int x, int y, int edgepoint, float interpolate)
     switch(edgepoint)
     {
         case 0:
-            coordinates.push_back((int)(x + SQUARE_SIZE*interpolate));
+            coordinates.push_back((x + SQUARE_SIZE*interpolate));
             coordinates.push_back(y);
             return coordinates;
         case 1:
             coordinates.push_back(x + SQUARE_SIZE);
-            coordinates.push_back((int)(y + SQUARE_SIZE*interpolate));
+            coordinates.push_back((y + SQUARE_SIZE*interpolate));
             return coordinates;
         case 2:
-            coordinates.push_back((int)(x + SQUARE_SIZE*interpolate));
+            coordinates.push_back((x + SQUARE_SIZE*interpolate));
             coordinates.push_back(y + SQUARE_SIZE);
             return coordinates;
         case 3:
             coordinates.push_back(x);
-            coordinates.push_back((int)(y + SQUARE_SIZE*interpolate));
+            coordinates.push_back((y + SQUARE_SIZE*interpolate));
             return coordinates;
     }
     coordinates[0] = -1;

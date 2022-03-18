@@ -164,7 +164,7 @@ int main(int argc, char* args[])
                             for (auto eqn: equationsList)
                             {
                                 std::vector<std::vector<float>> square;
-                                square.push_back(eqn.parse_point(x_pos , y_pos));
+                                square.push_back(eqn.parse_point(x_pos, y_pos));
                                 square.push_back(eqn.parse_point(x_pos+SQUARE_SIZE, y_pos));
                                 square.push_back(eqn.parse_point(x_pos+SQUARE_SIZE, y_pos+SQUARE_SIZE));
                                 square.push_back(eqn.parse_point(x_pos, y_pos+SQUARE_SIZE));
