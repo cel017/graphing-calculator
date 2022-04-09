@@ -9,7 +9,7 @@ metaballs: ${OBJ}
 	${CXX} ${LDFLAGS} -o metaballs ${OBJ}
 
 %.o: %.cpp
-	${CXX} -Iinclude/ -c ${CFLAGS} -o $@ $<
+	${CXX} -I include/ -c ${CFLAGS} -o $@ $<
 
 clean:
 	rm -f metaballs ${OBJ}
