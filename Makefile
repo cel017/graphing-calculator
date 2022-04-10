@@ -1,17 +1,17 @@
 CXX ?= g++
-ERROR ?= -Wall -Wextra -Werror -pedantic
-CFLAGS ?= -O3 -ggdb ${ERROR}
-LDFLAGS ?= -lSDL2 -lSDL2main -lSDL2_image
-SRC = $(wildcard src/*.cpp)
-OBJ = ${SRC:.cpp=.o}
+ERROR ?= -Wall
+CFLAGS ?= -std=c++14 -g -m64 ${ERROR}
 
-metaballs: ${OBJ}
-	${CXX} ${LDFLAGS} -o metaballs ${OBJ}
+run: main
+	start bin/debug/main.exe
 
-%.o: %.cpp
-	${CXX} -Iinclude/ -c ${CFLAGS} -o $@ $<
+main: obj
+	${CXX} *.o -o bin/debug/main -L C:/SDL2-w64/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
+
+obj:
+	${CXX} -c src/*.cpp ${CFLAGS} -I include -I C:/SDL2-w64/include
 
 clean:
-	rm -f metaballs ${OBJ}
+	rm -f main *.o
 
-.PHONY: metaballs clean
+.PHONY: main clean

@@ -9,6 +9,7 @@
 #include <unordered_map>
 #include <string>
 
+std::string remove_wspace(const std::string& str);
 // func to check if string is num
 bool isNumber(const std::string& str);
 // priority map for operators
@@ -20,7 +21,7 @@ class Equation
 {
 public:
 	Equation(std::string equation);
-	std::vector<float> parse_point(float x, float y, float scale = 25.0f);
+	std::vector<float> parse_point(float x, float y, float scale = 10.0f);
 private:
 	std::string equation;
 	std::string imp_exp;  // implicit expression

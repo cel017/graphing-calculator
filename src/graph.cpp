@@ -1,8 +1,21 @@
 #include "graph.h"
 
 
+std::string remove_wspace(const std::string& str)
+{
+	// function to remove whitespaces from string
+	std::string tempstr;
+	for (char const &c : str)
+	{
+		if (c==' ') continue;
+		else tempstr+=c;
+	}
+	return tempstr;
+}
+
 bool isNumber(const std::string& str)
 {
+	// function to determine if a string is an int
     for (char const &c : str) 
     {
         if (isdigit(c) == 0) return false;
@@ -10,6 +23,7 @@ bool isNumber(const std::string& str)
     return true;
 }
 
+// constant map to store operator priority
 std::unordered_map<std::string, int> const OPS_PRIORITY(
 {
 	{"^", 4},
@@ -19,6 +33,7 @@ std::unordered_map<std::string, int> const OPS_PRIORITY(
 	{"-", 0}
 });
 
+// helper function to cover each operation
 float calculate(float a, float b, std::string op)
 {
 	if (op == "^")
@@ -35,7 +50,7 @@ float calculate(float a, float b, std::string op)
 		return 0;
 }
 
-// operator wrapper function //
+// operator wrapper functions //
 float add(float a, float b)
 {
 	return a+b;
@@ -56,6 +71,8 @@ float div(float a, float b)
 	return a/b;
 }
 
+
+// Equation class functions //
 Equation::Equation(std::string equation)
 {
     bool is_digit = false;
@@ -64,13 +81,9 @@ Equation::Equation(std::string equation)
     std::stack<std::string> ops;
 
     // get implicit eqn
-    for (int i = 0; i<(int)equation.length(); i++)
-    {
-    	if (equation[i] == '=')
-    	{
-    		imp_exp = equation.substr(0, i)+"-("+equation.substr(i+1, equation.length()-i-1)+")";
-    	}
-    }
+    int eqId = equation.find("=");
+    imp_exp = equation.substr(0, eqId)+"-("+equation.substr(eqId+1, equation.length()-eqId-1)+")";
+    imp_exp = remove_wspace(imp_exp);
 
     for (int i = 0; i<(int)imp_exp.length(); i++)
     {
@@ -181,8 +194,8 @@ Equation::Equation(std::string equation)
 std::vector<float> Equation::parse_point(float x, float y, float scale)
 {
 	x=x/scale, y=y/scale;
-    std::vector<float> point;
 
+    std::vector<float> point;
 	std::stack<float> output_stack;
 	for (auto token : rev_pol)
 	{
